@@ -7,8 +7,6 @@ pipeline {
     stages {
         stage('Dependecies') {
             steps {
-                build job: 'account', wait: true
-                build job: 'product', wait: true
                 build job: 'order', wait: true
             }
         }
@@ -27,5 +25,11 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') { 
+            steps {
+                sh 'kubectl apply -f k8s/service.yaml'
+                sh 'kubectl apply -f k8s/deployment.yaml'
+            }
+        }    
     }
 }
